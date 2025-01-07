@@ -1,13 +1,11 @@
 ---
 import logo from '@assets/logo.svg'
+import Form from '@components/Form.svelte'
 ---
 
 <div class="background">
-    <img class="logo" src={logo.src} alt="logo">
-  <div class="container">
-    <input placeholder="Shorten your URL" type="text">
-    <button>SHORTEN</button>
-  </div>
+  <img class="logo" src={logo.src} alt="logo">
+  <Form client:load />
 </div>
 
 <style>
@@ -24,56 +22,5 @@ import logo from '@assets/logo.svg'
 
   .logo {
     width: min(20rem, 100%);
-  }
-
-  .container {
-    width: min(calc(100% - 2rem), 40rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 1rem;
-    padding: 2rem 1rem;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(1rem);
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #0e0e0e;
-  }
-
-  input {
-    outline: none;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    font-size: 1.25rem;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #FFFFFF;
-    width: 100%;
-  }
-
-  input:focus {
-    border: 1px solid #52a0ff;
-  }
-
-  button {
-    outline: none;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    font-size: 1.25rem;
-    background: #3c82d8;
-    color: #FFFFFF;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  button:hover {
-    background: #2f6abf;
   }
 </style>
