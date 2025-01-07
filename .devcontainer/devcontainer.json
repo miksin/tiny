@@ -9,7 +9,8 @@
     "ghcr.io/devcontainers/features/common-utils:2": {}
   },
   "forwardPorts": [
-    4321
+    4321,
+    8976
   ],
   "customizations": {
     "vscode": {

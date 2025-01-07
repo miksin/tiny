@@ -9,7 +9,7 @@ interface Body {
   url: string;
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   const { url } = await request.json() as Body;
   if (!url) {
     return new Response(JSON.stringify({ error: "URL is required" }), { status: 400 });
@@ -21,5 +21,8 @@ export const POST: APIRoute = async ({ request }) => {
     slug += charset[hashed % charset.length];
     hashed = Math.floor(hashed / charset.length);
   }
+  const { SHORT_TO_URL } = locals.runtime.env;
+  await SHORT_TO_URL.put(slug, url);
+
   return new Response(JSON.stringify({ slug }));
 }
