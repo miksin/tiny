@@ -1,35 +1,35 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-
-  let origin = $state('');
   let fetching = $state(false);
   let text = $state('');
   let errorMsg = $state('');
   let result = $state('');
 
-  onMount(() => {
-    origin = window.location.origin;
-  });
-
   async function shorten() {
-    if (!text) return;
-
-    fetching = true;
     try {
-      const response = await fetch('/shorten', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: text }),
-    });
-    const data = await response.json() as { slug: string };
-    const { slug } = data;
-    result = `${origin}/${slug}`;
-    fetching = false;
-    } catch (error) {
-      fetching = false;
-      errorMsg = 'An error occurred. Please try again later.';
+      const url = new URL(text);
+      fetching = true;
+      try {
+        const response = await fetch('/shorten', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url: url.href }),
+        });
+        if (!response.ok) {
+          throw new Error();
+        }
+        const data = await response.json() as { slug: string };
+        const { slug } = data;
+        result = `${window.location.origin}/${slug}`;
+        fetching = false;
+        errorMsg = '';
+      } catch (error) {
+        fetching = false;
+        errorMsg = 'An error occurred. Please try again later.';
+      }
+    } catch (e) {
+      errorMsg = 'Invalid URL.';
     }
   }
 </script>
