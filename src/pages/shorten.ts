@@ -1,8 +1,6 @@
 import type { APIRoute } from "astro";
 import { md5 } from 'js-md5';
 
-export const prerender = false;
-
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 interface Body {
