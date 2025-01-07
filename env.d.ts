@@ -2,7 +2,6 @@
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace;
 type ENV = {
-  URL_TO_SHORT: KVNamespace;
   SHORT_TO_URL: KVNamespace;
 };
 
