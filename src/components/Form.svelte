@@ -1,6 +1,15 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
+  let origin = $state('');
   let fetching = $state(false);
   let text = $state('');
+  let errorMsg = $state('');
+  let result = $state('');
+
+  onMount(() => {
+    origin = window.location.origin;
+  });
 
   async function shorten() {
     if (!text) return;
@@ -14,18 +23,32 @@
       },
       body: JSON.stringify({ url: text }),
     });
-    const data = await response.json();
-    console.log(data);
+    const data = await response.json() as { slug: string };
+    const { slug } = data;
+    result = `${origin}/${slug}`;
     fetching = false;
     } catch (error) {
-      console.error(error);
+      fetching = false;
+      errorMsg = 'An error occurred. Please try again later.';
     }
   }
 </script>
 
 <div class="container">
-  <input placeholder="Shorten your URL" bind:value={text} />
-  <button onclick={shorten} disabled={fetching}>SHORTEN</button>
+  <div class="box">
+    <input placeholder="Shorten your URL" bind:value={text} />
+    <button onclick={shorten} disabled={fetching}>SHORTEN</button>
+    {#if errorMsg}
+      <p class="err">{errorMsg}</p>
+    {/if}
+  </div>
+
+  {#if result}
+    <div class="box">
+      <p>Your shortened URL:</p>
+      <input value={result} disabled />
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -33,7 +56,12 @@
     width: min(calc(100% - 2rem), 40rem);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.4);
@@ -41,6 +69,10 @@
     padding: 2rem 1rem;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(1rem);
+  }
+
+  .err {
+    color: #ff0000;
   }
 
   input {
